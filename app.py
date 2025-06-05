@@ -66,7 +66,13 @@ st.markdown(f"**Distancia estimada:** {distancia:.2f} km")
 
 # Mostrar instrucciones
 st.subheader("Resumen del trayecto:")
-for step in info['steps']:
-    st.markdown(f"- {step['instruction']} ({int(step['distance'])} m)")
+pasos = info.get('steps', [])
+if not pasos:
+    st.warning("No se encontraron instrucciones detalladas para esta ruta.")
+else:
+    for i, step in enumerate(pasos):
+        instruccion = step.get('instruction', 'Sin instrucción')
+        distancia_paso = int(step.get('distance', 0))                        
+        st.markdown(f"{i+1}. {instruccion} ({distancia_paso} m)")
 
 folium_static(m)
